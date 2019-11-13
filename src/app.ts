@@ -7,15 +7,21 @@ import * as logger from "koa-logger";
 import * as json from "koa-json";
 import * as bodyParser from "koa-bodyparser";
 
-import {bootstrapControllers} from "koa-ts-controllers";
+import { bootstrapControllers } from "koa-ts-controllers";
 
 const app = new Koa();
-const route = new Router();
+const router = new Router();
 
 app.use(json());
 app.use(logger());
 app.use(bodyParser());
-app.use(route.get);
+
+bootstrapControllers(app, {
+    router,
+    basePath: "/api",
+    controllers: ["controllers/*.ts"],
+    
+});
 
 app.use(async (ctx) => {
     ctx.body = {
